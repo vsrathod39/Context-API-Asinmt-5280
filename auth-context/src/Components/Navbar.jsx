@@ -2,10 +2,17 @@ import React from "react";
 import { AuthContext } from "../Contexts/AuthContextProvider";
 
 export default function Navbar() {
-  const { setSignupBtn } = AuthContext.Consumer();
+  const { setSignupBtn, setloginBtn, toggleAuth } =
+    React.useContext(AuthContext);
 
   const handleSignup = () => {
+    setloginBtn(false);
     setSignupBtn(true);
+  };
+
+  const handleLogin = () => {
+    setSignupBtn(false);
+    setloginBtn(true);
   };
 
   return (
@@ -78,8 +85,12 @@ export default function Navbar() {
             >
               Signup
             </button>
-            <button className="btn btn-outline-success mx-2" type="submit">
-              Login
+            <button
+              onClick={handleLogin}
+              className="btn btn-outline-success mx-2"
+              type="submit"
+            >
+              {toggleAuth ? "Logout" : "Login"}
             </button>
           </div>
         </div>

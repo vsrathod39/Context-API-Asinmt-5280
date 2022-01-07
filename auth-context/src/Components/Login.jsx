@@ -1,45 +1,72 @@
 import React from "react";
+import Form from "./Form";
+import { AuthContext } from "../Contexts/AuthContextProvider";
 
-export default function SignUp() {
+export default function Login() {
+  const [user, setUser] = React.useState();
+  const { setIsAuth, setToggleAuth, setloginBtn, setFormState } =
+    React.useContext(AuthContext);
+
+  const handleChange = (e) => {
+    let { name, value } = e.target;
+    setUser({
+      ...user,
+      [name]: value,
+    });
+  };
+
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    if (
+      !(user?.name?.length > 2) &&
+      !(user?.email?.length > 5) &&
+      !(user?.password?.length > 5)
+    ) {
+      setFormState({ failed: true });
+      setTimeout(() => {
+        setFormState(null);
+      }, 3000);
+      return;
+    }
+    fetch("https://reqres.in/api/login", {
+      method: "POST",
+      mode: "cors",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ email: "eve.holt@reqres.in", password: "pistol" }),
+    })
+      .then((res) => {
+        return res.json();
+      })
+      .then((data) => {
+        setIsAuth({ status: true, token: data.token });
+        setloginBtn(false);
+        setFormState({ status: true });
+        console.log(data);
+        setTimeout(() => {
+          setloginBtn(false);
+          setToggleAuth(true);
+          setFormState(null);
+        }, 3000);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  };
+
   return (
-    <form>
-      <div className="mb-3">
-        <label for="exampleInputEmail1" className="form-label">
-          Email address
-        </label>
-        <input
-          type="email"
-          className="form-control"
-          id="exampleInputEmail1"
-          aria-describedby="emailHelp"
-        />
-        <div id="emailHelp" className="form-text">
-          We'll never share your email with anyone else.
-        </div>
-      </div>
-      <div className="mb-3">
-        <label for="exampleInputPassword1" className="form-label">
-          Password
-        </label>
-        <input
-          type="password"
-          className="form-control"
-          id="exampleInputPassword1"
-        />
-      </div>
-      <div className="mb-3 form-check">
-        <input
-          type="checkbox"
-          className="form-check-input"
-          id="exampleCheck1"
-        />
-        <label className="form-check-label" for="exampleCheck1">
-          Check me out
-        </label>
-      </div>
-      <button type="submit" className="btn btn-primary">
-        Submit
-      </button>
-    </form>
+    <Form handleSubmit={handleSubmit} title={"Login"} btnTitle={"Login"}>
+      <input
+        onChange={handleChange}
+        type="text"
+        name="email"
+        placeholder="email"
+      />
+      <input
+        onChange={handleChange}
+        type="password"
+        name="password"
+        placeholder="Password"
+      />
+    </Form>
   );
 }
