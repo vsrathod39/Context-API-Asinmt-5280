@@ -2,15 +2,28 @@ import React from "react";
 import { AuthContext } from "../Contexts/AuthContextProvider";
 
 export default function Navbar() {
-  const { setSignupBtn, setloginBtn, toggleAuth } =
-    React.useContext(AuthContext);
+  const {
+    setSignupBtn,
+    setloginBtn,
+    toggleAuth,
+    setIsAuth,
+    setToggleAuth,
+    setFormState,
+  } = React.useContext(AuthContext);
 
   const handleSignup = () => {
     setloginBtn(false);
     setSignupBtn(true);
   };
 
-  const handleLogin = () => {
+  const handleLogin = (e) => {
+    if (e.target.innerText === "Logout") {
+      setIsAuth(false);
+      setToggleAuth(null);
+      setSignupBtn(false);
+      setloginBtn(false);
+      setFormState(null);
+    }
     setSignupBtn(false);
     setloginBtn(true);
   };
@@ -78,13 +91,15 @@ export default function Navbar() {
                 </ul>
               </li>
             </ul>
-            <button
-              onClick={handleSignup}
-              className="btn btn-outline-success"
-              type="submit"
-            >
-              Signup
-            </button>
+            {!toggleAuth ? (
+              <button
+                onClick={handleSignup}
+                className="btn btn-outline-success"
+                type="submit"
+              >
+                Signup
+              </button>
+            ) : null}
             <button
               onClick={handleLogin}
               className="btn btn-outline-success mx-2"

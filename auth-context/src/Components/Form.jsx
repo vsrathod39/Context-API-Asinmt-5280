@@ -4,7 +4,6 @@ import { AuthContext } from "../Contexts/AuthContextProvider";
 
 export default function Form({ title, children, handleSubmit, btnTitle }) {
   const { formState } = React.useContext(AuthContext);
-  console.log(formState);
   return (
     <>
       <Div>
@@ -19,7 +18,7 @@ export default function Form({ title, children, handleSubmit, btnTitle }) {
         {formState?.failed ? (
           <p style={{ color: "red" }}>Check the details</p>
         ) : formState?.status ? (
-          <p style={{ color: "red" }}>{btnTitle} Success</p>
+          <p style={{ color: "green" }}>{btnTitle} Success</p>
         ) : null}
       </Div>
     </>

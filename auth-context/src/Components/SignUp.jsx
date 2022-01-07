@@ -4,7 +4,8 @@ import { AuthContext } from "../Contexts/AuthContextProvider";
 
 export default function SignUp() {
   const [user, setUser] = React.useState();
-  const { setFormState } = React.useContext(AuthContext);
+  const { setFormState, setSignupBtn, setloginBtn } =
+    React.useContext(AuthContext);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -40,6 +41,8 @@ export default function SignUp() {
         setFormState({ status: true });
         setTimeout(() => {
           setFormState(null);
+          setSignupBtn(false);
+          setloginBtn(true);
         }, 3000);
       })
       .catch((error) => {

@@ -39,9 +39,7 @@ export default function Login() {
       })
       .then((data) => {
         setIsAuth({ status: true, token: data.token });
-        setloginBtn(false);
         setFormState({ status: true });
-        console.log(data);
         setTimeout(() => {
           setloginBtn(false);
           setToggleAuth(true);
